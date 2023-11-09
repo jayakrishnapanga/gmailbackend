@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose=require("mongoose")
 
 const EmailSchema = mongoose.Schema({
     to: {
@@ -38,4 +38,4 @@ const EmailSchema = mongoose.Schema({
 
 const email = mongoose.model('emails', EmailSchema);
 
-export default email;
+module.exports=email;

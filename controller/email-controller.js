@@ -1,6 +1,8 @@
-import Email from "../model/email.js";
+// import Email from "../model/email.js";
 
-export const saveSendEmails = async (request, response) => {
+const Email=require("../model/email.js")
+
+ const saveSendEmails = async (request, response) => {
     try {
         console.log('i am executing')
         const email = await new Email(request.body);
@@ -12,7 +14,7 @@ export const saveSendEmails = async (request, response) => {
     }
 }
 
-export const getEmails = async (request, response) => {
+const getEmails = async (request, response) => {
     try {
         let emails;
 
@@ -36,7 +38,7 @@ export const getEmails = async (request, response) => {
     }
 }
 
-export const toggleStarredEmail = async (request, response) => {
+const toggleStarredEmail = async (request, response) => {
     try {   
         await Email.updateOne({ _id: request.body.id }, { $set: { starred: request.body.value }})
         response.status(201).json('Value is updated');
@@ -45,7 +47,7 @@ export const toggleStarredEmail = async (request, response) => {
     }
 }
 
-export const deleteEmails = async (request, response) => {
+const deleteEmails = async (request, response) => {
     try {
         await Email.deleteMany({ _id: { $in: request.body }})
         response.status(200).json('emails deleted successfully');
@@ -54,10 +56,20 @@ export const deleteEmails = async (request, response) => {
     }
 }
 
-export const moveEmailsToBin = async (request, response) => {
+ const moveEmailsToBin = async (request, response) => {
     try {
         await Email.updateMany({ _id: { $in: request.body }}, { $set: { bin: true, starred: false, type: '' }});
     } catch (error) {
         response.status(500).json(error.message);   
     }
 }
+
+
+
+module.exports={
+    moveEmailsToBin,
+    deleteEmails,
+   toggleStarredEmail,
+   getEmails,
+   saveSendEmails
+ }
